@@ -25,6 +25,7 @@ define apache::function::virtualhost::common(
         ensure  => present,
         content => template('apache/etc/apache2/sites-available/virtualhost.erb'),
         notify  => Class['apache::common::service'],
+        require => File[$apache::params::virtualhostdir],
     }
 
     file { "${apache::params::rootdir}/${name}":
@@ -55,6 +56,7 @@ define apache::function::virtualhost::common(
         mode    => '0750',
         notify  => Class['apache::common::service'],
         owner   => root,
+        require => File[$apache::params::logdir],
     }
 
     file { [
