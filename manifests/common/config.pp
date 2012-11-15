@@ -44,6 +44,11 @@ class apache::common::config {
     recurse => true,
     require => Class['apache::common::install'],
   }
+
+  file { $apache::params::logdir:
+    ensure  => directory,
+    require => Class['apache::common::install'],
+  }
 }
 
 # vim:sw=2:ts=2:expandtab:textwidth=79
