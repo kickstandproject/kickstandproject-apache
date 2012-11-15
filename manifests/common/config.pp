@@ -1,6 +1,6 @@
 class apache::common::config {
   file { $apache::params::defaultfile:
-    ensure  => present,
+    ensure  => file,
     content => template('apache/etc/default/apache2.erb'),
     require => Class['apache::common::install'],
   }
@@ -10,13 +10,11 @@ class apache::common::config {
     require => Class['apache::common::install'],
   }
 
-  file { "${apache::params::basedir}/sites-available":
-    ensure  => directory,
-    require => File[$apache::params::basedir],
-  }
-
   file { "${apache::params::basedir}/sites-enabled":
     ensure  => directory,
+    force   => true,
+    purge   => true,
+    recurse => true,
     require => File[$apache::params::basedir],
   }
 
@@ -28,13 +26,13 @@ class apache::common::config {
   }
 
   file { "${apache::params::configdir}/security":
-    ensure  => present,
+    ensure  => file,
     content => template('apache/etc/apache2/conf.d/security.erb'),
     require => File[$apache::params::configdir],
   }
 
   file { $apache::params::configfile:
-    ensure  => present,
+    ensure  => file,
     content => template('apache/etc/apache2/apache2.conf.erb'),
     require => File[$apache::params::basedir],
   }
