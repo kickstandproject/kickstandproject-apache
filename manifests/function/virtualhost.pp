@@ -16,9 +16,16 @@
 # file at the top of the source tree.
 #
 define apache::function::virtualhost(
-    $content = ''
+    $content = '',
+    $docroot = '',
 ) {
     require apache::params
+
+    if ($docroot != '') {
+        $docroot_real = $docroot
+    } else {
+        $docroot_real = "${apache::params::rootdir}/${name}/html"
+    }
 
     apache::function::virtualhost::common { $name:
         content => $content,
